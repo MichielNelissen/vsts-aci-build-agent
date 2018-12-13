@@ -73,7 +73,7 @@ RUN apt-get update \
     curl \
     software-properties-common
   
- RUN add-apt-repository \
+ RUN add-apt-repository --allow-unauthenticated \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
