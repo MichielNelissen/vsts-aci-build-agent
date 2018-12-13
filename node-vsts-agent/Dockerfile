@@ -68,7 +68,7 @@ RUN apt-get update \
     curl \
     software-properties-common
   
-  RUN curl -sSL https://get.docker.com/ | she
+  RUN curl -sSL https://get.docker.com/ | sh
 
 # Clean system
 RUN apt-get clean \
