@@ -71,20 +71,15 @@ RUN apt-get update \
     apt-transport-https \
     ca-certificates \
     curl \
-    lxc \
-    iptables
+    software-properties-common
+  
+ RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+   
+  RUN apt-get update && apt-get install docker-ce
     
-# Install Docker from Docker Inc. repositories.
-RUN curl -sSL https://get.docker.com/ | sh
-
-# Install the magic wrapper.
-ADD ./wrapdocker /usr/local/bin/wrapdocker
-RUN chmod +x /usr/local/bin/wrapdocker
-
-# Define additional metadata for our image.
-VOLUME /var/lib/docker
-CMD ["wrapdocker"]
-
 # Clean system
 RUN apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
