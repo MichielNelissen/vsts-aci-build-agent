@@ -72,13 +72,8 @@ RUN apt-get update \
     ca-certificates \
     curl \
     software-properties-common
-  
- RUN add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
    
-  RUN apt-get update && apt-get install docker-ce -y
+  RUN curl -sSL https://get.docker.com/ | sh
     
 # Clean system
 RUN apt-get clean \
