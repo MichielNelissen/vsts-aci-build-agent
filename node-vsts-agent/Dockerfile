@@ -70,7 +70,7 @@ RUN apt-get update \
   
   RUN curl -sSL https://get.docker.com/ | sh
   
-   RUN systemctl start docker
+  RUN docker run hello-world
 
 # Clean system
 RUN apt-get clean \
