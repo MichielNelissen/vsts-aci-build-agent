@@ -68,8 +68,6 @@ RUN apt-get update -qq && apt-get install -qqy \
     curl \
     lxc \
     iptables
-    
-FROM microsoft/vsts-agent:ubuntu-16.04
 
 ENV DOCKER_CHANNEL stable
 ENV DOCKER_VERSION 18.06.1-ce
@@ -81,30 +79,12 @@ RUN set -ex \
  && docker -v
 
 ENV DOCKER_COMPOSE_VERSION 1.22.0
+ENV dotnetcore 2.2
 
 RUN set -x \
  && curl -fSL "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`" -o /usr/local/bin/docker-compose \
  && chmod +x /usr/local/bin/docker-compose \
  && docker-compose -v
- 
- RUN apt-get update -qq && apt-get install -qqy \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    lxc \
-    iptables
-    
-# Install Docker from Docker Inc. repositories.
-RUN curl -sSL https://get.docker.com/ | sh
-
-# Install the magic wrapper.
-ADD ./wrapdocker /usr/local/bin/wrapdocker
-RUN chmod +x /usr/local/bin/wrapdocker
-
-# Define additional metadata for our image.
-VOLUME /var/lib/docker
-CMD ["wrapdocker"]
-
  
 # Clean system
 RUN apt-get clean \
