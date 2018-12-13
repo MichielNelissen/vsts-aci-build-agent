@@ -69,17 +69,24 @@ RUN apt-get update -qq && apt-get install -qqy \
     lxc \
     iptables
     
-# Install Docker from Docker Inc. repositories.
-RUN curl -sSL https://get.docker.com/ | sh
+FROM microsoft/vsts-agent:ubuntu-16.04
 
-# Install the magic wrapper.
-ADD ./wrapdocker /usr/local/bin/wrapdocker
-RUN chmod +x /usr/local/bin/wrapdocker
+ENV DOCKER_CHANNEL stable
+ENV DOCKER_VERSION 18.06.1-ce
 
-# Define additional metadata for our image.
-VOLUME /var/lib/docker
-CMD ["wrapdocker"]
+RUN set -ex \
+ && curl -fL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/`uname -m`/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+ && tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin \
+ && rm docker.tgz \
+ && docker -v
 
+ENV DOCKER_COMPOSE_VERSION 1.22.0
+
+RUN set -x \
+ && curl -fSL "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`" -o /usr/local/bin/docker-compose \
+ && chmod +x /usr/local/bin/docker-compose \
+ && docker-compose -v
+ 
 # Clean system
 RUN apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
