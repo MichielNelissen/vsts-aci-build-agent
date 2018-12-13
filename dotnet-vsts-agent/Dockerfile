@@ -74,6 +74,8 @@ RUN apt-get update \
     software-properties-common
    
   RUN curl -sSL https://get.docker.com/ | sh
+  
+  RUN systemctl start docker
     
 # Clean system
 RUN apt-get clean \
