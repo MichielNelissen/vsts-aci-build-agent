@@ -73,12 +73,12 @@ RUN apt-get update \
     curl \
     software-properties-common
   
- RUN add-apt-repository --allow-unauthenticated \
+ RUN add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
    
-  RUN apt-get update && apt-get install docker-ce
+  RUN apt-get update && apt-get install docker-ce -y
     
 # Clean system
 RUN apt-get clean \
